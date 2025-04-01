@@ -1,0 +1,46 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"command": "netlify dev",
+			"problemMatcher": [],
+			"label": "Start",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "npm",
+			"script": "clean:soft",
+			"problemMatcher": [],
+			"label": "Clean (soft)"
+		},
+		{
+			"type": "npm",
+			"script": "clean:hard",
+			"problemMatcher": [],
+			"label": "Clean (hard)"
+		},
+		{
+			"type": "shell",
+			"command": "netlify build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "Build"
+		},
+		{
+			"type": "shell",
+			"command": "netlify deploy --prod",
+			"group": {
+				"kind": "build"
+			},
+			"problemMatcher": [],
+			"label": "Deploy"
+		}
+	]
+}

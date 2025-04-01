@@ -1,0 +1,18 @@
+---js
+{
+	permalink: "_redirects"
+}
+---
+
+{%- unless site.url contains ".netlify.app" -%}
+http://{{ site.netlifySubdomain }}.netlify.app/* {{ site.url }}/:splat 301!
+https://{{ site.netlifySubdomain }}.netlify.app/* {{ site.url }}/:splat 301!
+{%- endunless -%}
+
+{% if site.url contains "https://" %}
+{{ site.url | remove: "https://" | prepend: "http://" }}/* {{ site.url }}/:splat 301!
+{% unless site.subdomain -%}
+{{ site.url | remove: "https://" | prepend: "http://www." }}/* {{ site.url }}/:splat 301!
+{{ site.url | remove: "https://" | prepend: "https://www." }}/* {{ site.url }}/:splat 301!
+{% endunless %}
+{%- endif %}

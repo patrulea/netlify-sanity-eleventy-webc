@@ -1,0 +1,78 @@
+/* KEYWORDS
+
+	`initial`
+		default value, per-property basis (i.e. `display` defaults to `inline`)
+
+		default value, according to user agent stylesheet (i.e. `display` defaults to `block` for `p` elements)
+
+	`inherit`
+		parent element’s value
+
+	`unset`
+		`inherit` for naturally-inherited properties, `initial` for everything else
+
+	`none`
+		similar to 0, but also applicable to non-numeric values
+
+*/
+
+@define-mixin l-center $display: grid {
+	display: $display;
+	justify-content: center; /* center grid in container along inline axis */
+	align-content: center; /* center grid in container along block axis */
+	justify-items: center; /* center items in columns along inline axis */
+	align-items: center; /* center items in rows along block axis */
+}
+@define-mixin l-column {
+	display: grid;
+	align-content: start;
+}
+@define-mixin l-overlay {
+	position: absolute;
+	inset: 0;
+	background-color: transparent;
+	font-size: 0;
+	user-select: none;
+	z-index: 1;
+}
+@define-mixin l-stack {
+	display: grid;
+	grid-template-areas: "stack";
+	&::before, &::after, > :not(picture), > picture > img {
+		grid-area: stack;
+	}
+}
+
+@define-mixin bg-img $image, $size: contain {
+	background-image: $image;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: $size;
+}
+@define-mixin bg-mask $image, $color: CurrentColor, $size: contain {
+	background-color: $color;
+	mask-image: $image;
+	mask-repeat: no-repeat;
+	mask-position: center;
+	mask-size: $size;
+}
+
+@define-mixin transition $duration: inherit, $property: initial {
+	--duration: $duration;
+	transition-duration: var(--duration);
+	transition-timing-function: ease-out;
+	transition-property: $property;
+}
+
+@define-mixin list-with-commas {
+	*, ::before, ::after {
+		display: inline;
+	}
+	:where(&) > * {
+		&:not(:last-child) {
+			&::after {
+				content: ",";
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+{
+	"type": "module",
+	"scripts": {
+		"clean:soft": "mkdir -p _site && find _site -type f ! -name '*.avif' -delete && find _site -type d -empty -delete",
+		"clean:hard": "mkdir -p _site && rm -rf _site",
+		"dev": "npx eleventy --serve --incremental --quiet",
+		"build": "npx eleventy"
+	},
+	"dependencies": {
+		"@11ty/eleventy": "^3.0.0",
+		"@11ty/eleventy-img": "^6.0.0",
+		"@11ty/eleventy-plugin-webc": "^0.11.2",
+		"@sanity/client": "^6.28.3",
+		"@sanity/image-url": "^1.1.0",
+		"create-favicon": "^2.1.0",
+		"cssnano": "^7.0.6",
+		"netlify-plugin-cache": "^1.0.3",
+		"postcss": "^8.4.47",
+		"postcss-cli": "^11.0.0",
+		"postcss-mixins": "^11.0.3",
+		"postcss-preset-env": "^10.0.8",
+		"svgo": "^3.3.2",
+		"the-new-css-reset": "^1.11.3"
+	}
+}

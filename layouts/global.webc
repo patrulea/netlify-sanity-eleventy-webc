@@ -1,0 +1,28 @@
+---js
+{
+	layout: "base"
+}
+---
+
+<webc
+	webc:nokeep
+	@raw="content"
+></webc>
+
+<webc
+	webc:nokeep
+	webc:for="dataFile of ['site', 'global', 'locale', 'home', 'error404', 'permalinks', 'countryList', 'languageList']"
+>
+	<br>
+	<h2 @text="dataFile"></h2>
+	<br>
+	<code @text="JSON.stringify($data[dataFile])"></code>
+</webc>
+
+<style webc:bucket="global">
+	/***/
+</style>
+
+<script>
+	/***/
+</script>

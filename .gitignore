@@ -1,0 +1,20 @@
+# JUNK
+.DS_Store
+*.DS_Store
+**/.DS_Store
+**/*.DS_Store
+[Tt]humbs.db
+
+# NODE
+node_modules
+**/node_modules/**
+
+# VARIABLES
+.env
+
+# ELEVENTY
+_site
+.cache
+
+# NETLIFY
+.netlify

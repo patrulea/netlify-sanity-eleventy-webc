@@ -1,0 +1,13 @@
+---js
+{
+	permalink: "_headers"
+}
+---
+
+/*
+	Permissions-Policy: interest-cohort=()
+	{% if process.env.INCOGNITO == "true" or global.incognito -%}
+	X-Frame-Options: DENY
+	X-XSS-Protection: 1; mode=block
+	X-Robots-Tag: noindex
+	{%- endif -%}

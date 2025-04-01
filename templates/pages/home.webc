@@ -1,0 +1,20 @@
+---js
+{
+	layout: "global",
+	permalink: "index.html",
+	eleventyComputed: {
+		title: data => data.home.title,
+		description: data => data.home.description,
+		image: data => data.home.image
+	},
+	sitemap: 10
+}
+---
+
+<style>
+	/***/
+</style>
+
+<script>
+	/***/
+</script>

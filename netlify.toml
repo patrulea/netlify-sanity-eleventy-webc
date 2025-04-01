@@ -1,0 +1,19 @@
+[dev]
+	framework = "eleventy"
+	command = "npm run dev"
+	publish = "_site"
+	targetPort = 8080
+	port = 1111
+	autoLaunch = false
+
+[build]
+	command = "npm run build"
+	publish = "_site"
+
+[[plugins]]
+	package = "netlify-plugin-cache"
+	[plugins.inputs]
+		paths = [
+			".cache",
+			"_site/assets"
+		]

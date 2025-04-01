@@ -1,0 +1,56 @@
+<script webc:type="render" webc:is="template">
+	const { optimize } = require("svgo")
+	module.exports = async function () {
+		try {
+
+			const response = await fetch(this.src)
+			if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
+
+			const svgContent = await response.text()
+
+			// extract [width], [height], and [viewBox] attributes
+			const widthMatch = svgContent.match(/\bwidth="([\d.]+)"/)
+			const heightMatch = svgContent.match(/\bheight="([\d.]+)"/)
+			let width = widthMatch ? widthMatch[1] : null
+			let height = heightMatch ? heightMatch[1] : null
+
+			// fallback to [viewBox]
+			const viewBoxMatch = svgContent.match(/\bviewBox="([\d.\s-]+)"/)
+			if (viewBoxMatch) {
+				const [, , vWidth, vHeight] = viewBoxMatch[1].split(/\s+/).map(Number)
+				width = width || vWidth
+				height = height || vHeight
+			}
+
+			// ensure final values
+			width = width || "inherit"
+			height = height || "inherit"
+
+			return optimize(svgContent, {
+				multipass: true,
+				plugins: [
+					"preset-default",
+					"removeXlink",
+					"removeXMLNS",
+					{
+						name: "addAttributesToSVGElement",
+						params: {
+							attributes: Object.entries({
+								class: this.class,
+								alt: this.alt || "",
+								title: this.title,
+								style: `
+									--_width: ${width};
+									--_height: ${height};
+								`
+							}).map(([key, value]) => ({ [key]: value }))
+						}
+					}
+				]
+			}).data
+
+		} catch (error) {
+			console.error("Error:", error)
+		}
+	}
+</script>

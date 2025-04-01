@@ -1,0 +1,20 @@
+---js
+{
+	permalink: "sitemap.xml"
+}
+---
+
+{%- assign allSorted = collections.all | where: "url" | sort: "data.sitemap" | reverse -%}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	{% for item in allSorted -%}
+	{% if item.data.sitemap > 0 %}
+	<url>
+		<loc>{{ item.url | prepend: site.url }}</loc>
+		<lastmod>{{ item.date | date }}</lastmod>
+		<priority>{{ item.data.sitemap | divided_by: 10 | addDecimals: 1 }}</priority>
+	</url>
+	{% endif %}
+	{%- endfor %}
+</urlset>

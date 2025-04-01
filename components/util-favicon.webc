@@ -1,0 +1,28 @@
+<!--- https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs --->
+<!--- https://github.com/rexxars/create-favicon --->
+
+<script webc:type="render" webc:is="template">
+	const { createFavicon } = require("create-favicon")
+	module.exports = async function() {
+		try {
+
+			const originalSourceFile = this.favicon
+			const sourceFile = originalSourceFile.includes("://") ? originalSourceFile : "." + originalSourceFile
+
+			const { html } = await createFavicon({
+				sourceFile,
+				outputDir: "_site",
+				overwrite: true,
+				warn: false
+			})
+
+			return html
+
+		} catch (error) {
+
+			console.error("Favicon generation failed:", error.message)
+			return ""
+
+		}
+	}
+</script>

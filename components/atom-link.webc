@@ -1,0 +1,24 @@
+<a
+	:class="className || null"
+	:alt="alt || ''"
+	:role="role || null"
+	:title="title || null"
+	:href="link.isExternal ? link.externalHref : $data.permalinks[link.internalHref._ref]"
+	:target="link.isExternal ? '_blank' : null"
+	:aria-current="
+		evaluateAriaCurrent ?
+			link.isExternal ?
+				link.externalHref === $data.page.url ? 'page' : null
+			:  $data.permalinks[link.internalHref._ref] === $data.page.url ? 'page' : null
+		: null
+	"
+	:faux-aria-current="
+		evaluateAriaCurrent && !link.isExternal && !(
+			link.isExternal && link.externalHref === $data.page.url
+			|| $data.permalinks[link.internalHref._ref] === $data.page.url
+		) ?
+			$data.page.url.startsWith($data.permalinks[link.internalHref._ref]) ? 'page' : null
+		: null
+	"
+	@text="label || $data.locale.link.singular"
+></a>

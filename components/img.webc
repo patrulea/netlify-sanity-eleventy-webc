@@ -1,0 +1,61 @@
+<!--- https://www.11ty.dev/docs/plugins/image/ --->
+
+<script webc:type="render" webc:is="template">
+	const Image = require("@11ty/eleventy-img")
+	module.exports = async function() {
+
+		const metadata = await Image(this.src.includes("://") ? this.src : "." + this.src, {
+			failOnError: false,
+			widths: [
+				1920,
+				960,
+				480,
+				240
+			],
+			formats: [
+				"svg",
+				"avif"
+			],
+			urlPath: "/assets/",
+			outputDir: "./_site/assets",
+			svgShortCircuit: true,
+			cacheOptions: {
+				removeUrlQueryParams: true
+			}
+		})
+
+		const getHiDef = metadata => {
+			if (metadata.svg) {
+				return metadata.svg[0]
+			} else if (metadata.avif) {
+				return metadata.avif[metadata.avif.length - 1]
+			} else {
+				return {
+					width: "inherit",
+					height: "inherit"
+				}
+			}
+		}
+
+		const attributes = Object.fromEntries(
+			Object.entries({
+				class: this.class,
+				alt: this.alt || "",
+				title: this.title,
+				draggable: false,
+				sizes: this.sizes || "auto",
+				loading: "lazy",
+				decoding: "async",
+				style: `
+					--_width: ${getHiDef(metadata).width};
+					--_height: ${getHiDef(metadata).height};
+				`,
+				"data-orientation": this.dataOrientation,
+				"webc:raw": true
+			}).filter(([key, value]) => value !== undefined)
+		)
+
+		return Image.generateHTML(metadata, attributes)
+
+	}
+</script>

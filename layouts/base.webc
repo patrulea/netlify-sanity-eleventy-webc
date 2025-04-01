@@ -1,0 +1,257 @@
+---js
+{
+	eleventyComputed: {
+		metaTitle: data => {
+			if (data.title) {
+				return data.global.title + data.global.separator + data.title
+			} else {
+				return data.global.title
+			}
+		},
+		metaDescription: data => data.description || data.global.description,
+		metaTheme: data => data.global.color.background,
+		metaImage: data => (data.image || data.global.image) + "?fm=jpg" + "&fit=crop" + "&w=1200" + "&h=630",
+		metaFavicon: data => data.global.favicon,
+		metaUrl: data => data.site.url + data.page.url
+	}
+}
+---
+
+<!DOCTYPE html>
+<html :lang="languageList[global.language].htmlLang">
+	<head>
+
+		<meta charset="UTF-8">
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"
+		>
+		<meta name="generator" :content="eleventy.generator">
+
+		<meta
+			webc:if="process.env.INCOGNITO === 'true' || global.incognito"
+			webc:is="util-incognito"
+		></meta>
+
+		<title @text="metaTitle"></title>
+		<meta name="description" :content="metaDescription">
+		<meta name="theme-color" :content="metaTheme">
+		<meta
+			webc:if="metaFavicon"
+			webc:is="util-favicon"
+			:favicon="metaFavicon"
+		></meta>
+		<link rel="canonical" :href="metaUrl">
+
+		<meta property="og:type" content="website">
+		<meta property="og:locale" :content="languageList[global.language].ogLocale">
+		<meta property="og:title" :content="metaTitle">
+		<meta property="og:description" :content="metaDescription">
+		<meta property="og:image" :content="metaImage">
+		<meta property="og:url" :content="metaUrl">
+
+		<!--- STYLES --->
+		<link webc:keep rel="stylesheet" href="/assets/the-new-css-reset/reset.css">
+		<link webc:keep rel="stylesheet" :href="getBundleFileUrl('css', 'base')">
+		<style
+			webc:bucket="base"
+			@text="`
+				:root {
+					${Object.entries(global.color).map(([key, value]) => `--color-${key}: ${value}`).join(';')};
+				}
+			`"
+		></style>
+		<style webc:bucket="base">
+
+			/*** WEBFONTS ***/
+
+			/* @font-face {
+				font-family: "Grotesk Remix";
+				src: url("fonts/GroteskRemix-400-regular.woff2") format("woff2");
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			} */
+
+			/*** GLOBALS ***/
+
+			:root {
+
+				--duration: 1s;
+
+				/* typography */
+				font-size: .75rem; /* 12px */
+				font-weight: 400;
+				line-height: 1;
+
+				/* theme */
+				--theme-background: var(--color-background);
+				--theme-text: var(--color-text);
+				--theme-accent: var(--color-accent);
+				background-color: var(--theme-background);
+				color: var(--theme-text);
+
+			}
+
+			/* scrollbars */
+			/* :root {
+				overflow-inline: hidden;
+				scrollbar-gutter: stable;
+				scrollbar-color: var(--theme-background) var(--theme-text);
+			} */
+			/* ::-webkit-scrollbar {
+				inline-size: .5rem;
+				block-size: .5rem;
+			} */
+			/* ::-webkit-scrollbar-button {} */
+			/* ::-webkit-scrollbar-thumb {} */
+			/* ::-webkit-scrollbar-track {
+				background-color: CurrentColor;
+			} */
+			/* ::-webkit-scrollbar-track-piece {} */
+			/* ::-webkit-scrollbar-corner {} */
+			/* ::-webkit-resizer {} */
+			/* hide scrollbars */
+			/* @media (width <= 840px) {
+				::-webkit-scrollbar {
+					display: none;
+					width: 0;
+					height: 0;
+				}
+				* {
+					-ms-overflow-style: none;
+					scrollbar-width: none;
+				}
+			} */
+
+			* {
+				interpolate-size: allow-keywords; /* enable animation to/from keyword sizes (`auto`, `fit-content`, `max-content`) */
+				transition-behavior: allow-discrete; /* enable animation/transition of discrete properties */
+				overscroll-behavior: none; /* disable Apple overscroll */
+				min-inline-size: 0; /* normalize flexbox */
+			}
+
+			/* formatting */
+
+			::selection {
+				background-color: var(--theme-accent);
+			}
+
+			:focus-visible {
+				z-index: 1;
+			}
+
+			[hidden] {
+				&:not([hidden="until-found"]) {
+					display: none !important;
+				}
+			}
+
+			label, button, [type="submit"], [type="radio"], [type="checkbox"], summary {
+				user-select: none;
+				cursor: pointer;
+			}
+
+			img, svg, video, canvas, audio, iframe, embed, object {
+				display: inline-block;
+				vertical-align: middle; /* center with x-height, remove line-height gap */
+			}
+			img, svg, video, canvas {
+				block-size: auto; /* honor aspect ratio */
+				user-select: none;
+			}
+			img, video {
+				object-fit: cover;
+				border-style: none;
+			}
+			img {
+				-webkit-user-drag: none; /* prevent ghost images in Safari */
+				font-style: italic; /* differentiate fallback alt text */
+			}
+			picture {
+				display: contents;
+			}
+			svg {
+				fill: currentColor;
+			}
+			source, link, style, script {
+				display: none;
+			}
+			audio {
+				inline-size: 100%;
+				&:not([controls]) {
+					display: none;
+				}
+			}
+
+			b, strong {
+				font-weight: bolder;
+			}
+			i, em {
+				font-style: italic;
+			}
+			s, del {
+				text-decoration: line-through;
+				text-decoration-thickness: var(--_border-width, 2px);
+			}
+			:where(:any-link, button, input[type="submit"]) {
+				border-radius: var(--_border-radius, .25rem);
+				cursor: pointer;
+			}
+
+			/* display best asset for viewport orientation */
+			@media (orientation: landscape) {
+				:has(> [data-orientation="landscape"]) {
+					> [data-orientation="portrait"] {
+						display: none;
+					}
+				}
+			}
+			@media (orientation: portrait) {
+				:has(> [data-orientation="portrait"]) {
+					> [data-orientation="landscape"] {
+						display: none;
+					}
+				}
+			}
+
+		</style>
+		<link webc:keep rel="stylesheet" :href="getBundleFileUrl('css', 'global')">
+		<link webc:keep rel="stylesheet" :href="getBundleFileUrl('css', 'layout')">
+		<link webc:keep rel="stylesheet" :href="getBundleFileUrl('css', 'components')">
+		<link webc:keep rel="stylesheet" :href="getBundleFileUrl('css')">
+
+		<!--- SCRIPTS --->
+		<script webc:keep @text="`const locale = ${JSON.stringify(locale)}`"></script>
+		<script webc:keep :src="getBundleFileUrl('js', 'base')" defer></script>
+		<script webc:bucket="base">
+
+			function clamp(ideal, min, max) {
+				return Math.min(Math.max(ideal, min), max)
+			}
+
+			function logMouseMovement($container, elementQuery) {
+				const $element = $container.querySelector(elementQuery)
+				$container.addEventListener("mousemove", event => {
+
+					$element.style.setProperty(
+						"--_top",
+						`${clamp(event.offsetY - $element.offsetHeight / 2, 0, $container.offsetHeight - $element.offsetHeight)}px`
+					)
+
+					$element.style.setProperty(
+						"--_left",
+						`${clamp(event.offsetX - $element.offsetWidth / 2, 0, $container.offsetWidth - $element.offsetWidth)}px`
+					)
+
+				})
+			}
+
+			// global helpers here
+
+		</script>
+		<script webc:keep :src="getBundleFileUrl('js')" defer></script>
+
+	</head>
+	<body @raw="content"></body>
+</html>
