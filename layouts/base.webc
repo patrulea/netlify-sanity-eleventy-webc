@@ -1,13 +1,7 @@
 ---js
 {
 	eleventyComputed: {
-		metaTitle: data => {
-			if (data.title) {
-				return data.global.title + data.global.separator + data.title
-			} else {
-				return data.global.title
-			}
-		},
+		metaTitle: data => data.title ? data.global.title + data.global.separator + data.title : data.global.title,
 		metaDescription: data => data.description || data.global.description,
 		metaTheme: data => data.global.color.background,
 		metaImage: data => (data.image || data.global.image) + "?fm=jpg" + "&fit=crop" + "&w=1200" + "&h=630",
