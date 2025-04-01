@@ -59,7 +59,7 @@
 
 @define-mixin transition $duration: inherit, $property: initial {
 	--duration: $duration;
-	transition-duration: var(--duration);
+	transition-duration: var(--duration, 1s);
 	transition-timing-function: ease-out;
 	transition-property: $property;
 }
