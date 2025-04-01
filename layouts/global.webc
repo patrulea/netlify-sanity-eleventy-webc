@@ -1,7 +1,5 @@
----js
-{
-	layout: "base"
-}
+---
+layout: "base"
 ---
 
 <webc

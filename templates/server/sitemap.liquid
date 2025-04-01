@@ -1,7 +1,5 @@
----js
-{
-	permalink: "sitemap.xml"
-}
+---
+permalink: "sitemap.xml"
 ---
 
 {%- assign allSorted = collections.all | where: "url" | sort: "data.sitemap" | reverse -%}
