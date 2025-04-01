@@ -1,3 +1,15 @@
+---js
+{
+	layout: "base",
+	permalink: "404.html",
+	eleventyComputed: {
+		title: data => data.error404.title,
+		description: data => data.error404.description,
+		image: data => data.error404.image
+	}
+}
+---
+
 <h1 @text="title"></h1>
 
 <style>
