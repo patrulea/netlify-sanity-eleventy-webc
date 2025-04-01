@@ -1,14 +1,10 @@
----js
-{
-	eleventyComputed: {
-		metaTitle: data => data.title ? data.global.title + data.global.separator + data.title : data.global.title,
-		metaDescription: data => data.description || data.global.description,
-		metaTheme: data => data.global.color.background,
-		metaImage: data => (data.image || data.global.image) + "?fm=jpg" + "&fit=crop" + "&w=1200" + "&h=630",
-		metaFavicon: data => data.global.favicon,
-		metaUrl: data => data.site.url + data.page.url
-	}
-}
+---
+metaTitle: "metaTitle"
+metaDescription: "metaDescription"
+metaTheme: "#000"
+metaImage: "/assets/favicon.svg"
+metaFavicon: "/assets/image.jpg"
+metaUrl: "metaUrl"
 ---
 
 <!DOCTYPE html>
@@ -216,7 +212,7 @@
 		<link webc:keep rel="stylesheet" :href="getBundleFileUrl('css')">
 
 		<!--- SCRIPTS --->
-		<script webc:keep @text="`const locale = ${JSON.stringify(locale)}`"></script>
+		<script webc:keep @text="`locale = ${JSON.stringify(locale)}`"></script>
 		<script webc:keep :src="getBundleFileUrl('js', 'base')" defer></script>
 		<script webc:bucket="base">
 
@@ -225,16 +221,16 @@
 			}
 
 			function logMouseMovement($container, elementQuery) {
-				const $element = $container.querySelector(elementQuery)
+				$element = $container.querySelector(elementQuery)
 				$container.addEventListener("mousemove", event => {
 
 					$element.style.setProperty(
-						"--_top",
+						"--_top"
 						`${clamp(event.offsetY - $element.offsetHeight / 2, 0, $container.offsetHeight - $element.offsetHeight)}px`
 					)
 
 					$element.style.setProperty(
-						"--_left",
+						"--_left"
 						`${clamp(event.offsetX - $element.offsetWidth / 2, 0, $container.offsetWidth - $element.offsetWidth)}px`
 					)
 
