@@ -17,10 +17,6 @@ layout: "base"
 	<code @text="JSON.stringify($data[dataFile])"></code>
 </webc>
 
-<style webc:bucket="global">
-	/***/
-</style>
+<!--- <style webc:bucket="global"></style> --->
 
-<script>
-	/***/
-</script>
+<!--- <script></script> --->
