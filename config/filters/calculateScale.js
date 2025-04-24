@@ -1,5 +1,3 @@
-// TODO: https://developer.mozilla.org/en-US/docs/Web/CSS/hypot
-
 export default (a = 1, b = 1, percentageValue = false) => {
 
 	if (a <= 0 || b <= 0) {
