@@ -60,11 +60,11 @@
 	user-select: none;
 	z-index: 1;
 }
-@define-mixin l-stack {
+@define-mixin l-stack $area {
 	display: grid;
-	grid-template-areas: "stack";
+	grid-template-areas: "$area";
 	&::before, &::after, > :not(picture), > picture > img {
-		grid-area: stack;
+		grid-area: $area;
 	}
 }
 @define-mixin l-subgrid $children: 1 / -1 {
