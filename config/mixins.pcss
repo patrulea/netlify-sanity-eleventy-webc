@@ -16,6 +16,29 @@
 
 */
 
+/* FONT WEIGHTS
+
+	100: Thin
+	200: Extra Light / Ultra Light
+	300: Light
+	400: Normal / Regular
+	500: Medium
+	600: Semi Bold / Demi Bold
+	700: Bold
+	800: Extra Bold / Ultra Bold
+	900: Black / Heavy
+
+*/
+
+@define-mixin t-background $background: inherit {
+	--theme-background: $background;
+	background-color: var(--theme-background);
+}
+@define-mixin t-text $text: inherit {
+	--theme-text: $text;
+	color: var(--theme-text);
+}
+
 @define-mixin l-center $display: grid {
 	display: $display;
 	justify-content: center; /* center grid in container along inline axis */
@@ -23,9 +46,11 @@
 	justify-items: center; /* center items in columns along inline axis */
 	align-items: center; /* center items in rows along block axis */
 }
-@define-mixin l-column {
+@define-mixin l-column $gap: 0 {
+	--_row-gap: $gap;
 	display: grid;
 	align-content: start;
+	row-gap: var(--_row-gap);
 }
 @define-mixin l-overlay {
 	position: absolute;
@@ -40,6 +65,13 @@
 	grid-template-areas: "stack";
 	&::before, &::after, > :not(picture), > picture > img {
 		grid-area: stack;
+	}
+}
+@define-mixin l-subgrid $children: 1 / -1 {
+	display: grid;
+	grid-template-columns: subgrid;
+	> * {
+		grid-column: $children;
 	}
 }
 
@@ -57,10 +89,30 @@
 	mask-size: $size;
 }
 
-@define-mixin transition $duration: inherit, $property: initial {
-	--duration: $duration;
-	transition-duration: var(--duration, 1s);
-	transition-timing-function: ease-out;
+@define-mixin transparent-interaction {
+	pointer-events: none;
+	> * {
+		pointer-events: initial;
+	}
+}
+
+@define-mixin underline $width: inherit {
+	--_border-width: $width;
+	text-decoration-thickness: var(--_border-width);
+	text-decoration-line: underline;
+	text-decoration-style: solid;
+	text-underline-offset: .125em;
+}
+
+/* @define-mixin button $background: inherit, $text: inherit {} */
+
+/* @define-mixin link {} */
+
+@define-mixin transition $property: initial, $duration: inherit, $timing-function: inherit {
+	--_duration: $duration;
+	--_timing-function: $timing-function;
+	transition-duration: var(--_duration, 1s);
+	transition-timing-function: var(--_timing-function, ease-out);
 	transition-property: $property;
 }
 
