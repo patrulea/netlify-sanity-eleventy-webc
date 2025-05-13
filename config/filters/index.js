@@ -7,7 +7,6 @@ import getFileExt from "./getFileExt.js"
 import markdownify from "./markdownify.js"
 import randomizeArray from "./randomizeArray.js"
 import removeProtocol from "./removeProtocol.js"
-import sanityImage from "./sanityImage.js"
 import stripHtml from "./stripHtml.js"
 import truncateWords from "./truncateWords.js"
 
@@ -21,7 +20,6 @@ export default {
 	markdownify,
 	randomizeArray,
 	removeProtocol,
-	sanityImage,
 	stripHtml,
 	truncateWords
 }
