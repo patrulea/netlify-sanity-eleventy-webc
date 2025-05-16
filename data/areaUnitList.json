@@ -1,0 +1,52 @@
+{
+	"acre": {
+		"plural": "Acres",
+		"singular": "Acre",
+		"symbol": "ac"
+	},
+	"hectare": {
+		"plural": "Hectares",
+		"singular": "Hectare",
+		"symbol": "ha"
+	},
+	"square_centimeter": {
+		"plural": "Square Centimeters",
+		"singular": "Square Centimeter",
+		"symbol": "cm²"
+	},
+	"square_foot": {
+		"plural": "Square Feet",
+		"singular": "Square Foot",
+		"symbol": "ft²"
+	},
+	"square_inch": {
+		"plural": "Square Inches",
+		"singular": "Square Inch",
+		"symbol": "in²"
+	},
+	"square_kilometer": {
+		"plural": "Square Kilometers",
+		"singular": "Square Kilometer",
+		"symbol": "km²"
+	},
+	"square_meter": {
+		"plural": "Square Meters",
+		"singular": "Square Meter",
+		"symbol": "m²"
+	},
+	"square_mile": {
+		"plural": "Square Miles",
+		"singular": "Square Mile",
+		"symbol": "mi²"
+	},
+	"square_millimeter": {
+		"plural": "Square Millimeters",
+		"singular": "Square Millimeter",
+		"symbol": "mm²"
+	},
+	"square_yard": {
+		"plural": "Square Yards",
+		"singular": "Square Yard",
+		"symbol": "yd²"
+	}
+}

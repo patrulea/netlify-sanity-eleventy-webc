@@ -2,6 +2,7 @@
 	const { optimize } = require("svgo")
 	module.exports = async function () {
 		try {
+
 			const response = await fetch(this.src)
 			if (!response.ok) throw new Error(`HTTP error: ${response.status}`)
 

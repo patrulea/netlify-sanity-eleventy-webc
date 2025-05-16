@@ -1,0 +1,122 @@
+{
+	"aud": {
+		"code": "AUD",
+		"singular": "Australian Dollar",
+		"plural": "Australian Dollars",
+		"sign": "$"
+	},
+	"brl": {
+		"code": "BRL",
+		"singular": "Brazilian Real",
+		"plural": "Brazilian Reais",
+		"sign": "R$"
+	},
+	"cad": {
+		"code": "CAD",
+		"singular": "Canadian Dollar",
+		"plural": "Canadian Dollars",
+		"sign": "$"
+	},
+	"chf": {
+		"code": "CHF",
+		"singular": "Swiss Franc",
+		"plural": "Swiss Francs",
+		"sign": "CHF"
+	},
+	"cny": {
+		"code": "CNY",
+		"singular": "Chinese Yuan",
+		"plural": "Chinese Yuan",
+		"sign": "¥"
+	},
+	"crc": {
+		"code": "CRC",
+		"singular": "Costa Rican Colón",
+		"plural": "Costa Rican Colones",
+		"sign": "₡"
+	},
+	"dkk": {
+		"code": "DKK",
+		"singular": "Danish Krone",
+		"plural": "Danish Kroner",
+		"sign": "kr"
+	},
+	"eur": {
+		"code": "EUR",
+		"singular": "Euro",
+		"plural": "Euros",
+		"sign": "€"
+	},
+	"gbp": {
+		"code": "GBP",
+		"singular": "British Pound",
+		"plural": "British Pounds",
+		"sign": "£"
+	},
+	"inr": {
+		"code": "INR",
+		"singular": "Indian Rupee",
+		"plural": "Indian Rupees",
+		"sign": "₹"
+	},
+	"jpy": {
+		"code": "JPY",
+		"singular": "Japanese Yen",
+		"plural": "Japanese Yen",
+		"sign": "¥"
+	},
+	"krw": {
+		"code": "KRW",
+		"singular": "South Korean Won",
+		"plural": "South Korean Won",
+		"sign": "₩"
+	},
+	"mxn": {
+		"code": "MXN",
+		"singular": "Mexican Peso",
+		"plural": "Mexican Pesos",
+		"sign": "$"
+	},
+	"nok": {
+		"code": "NOK",
+		"singular": "Norwegian Krone",
+		"plural": "Norwegian Kroner",
+		"sign": "kr"
+	},
+	"nzd": {
+		"code": "NZD",
+		"singular": "New Zealand Dollar",
+		"plural": "New Zealand Dollars",
+		"sign": "$"
+	},
+	"rub": {
+		"code": "RUB",
+		"singular": "Russian Ruble",
+		"plural": "Russian Rubles",
+		"sign": "₽"
+	},
+	"sek": {
+		"code": "SEK",
+		"singular": "Swedish Krona",
+		"plural": "Swedish Kronor",
+		"sign": "kr"
+	},
+	"sgd": {
+		"code": "SGD",
+		"singular": "Singapore Dollar",
+		"plural": "Singapore Dollars",
+		"sign": "$"
+	},
+	"usd": {
+		"code": "USD",
+		"singular": "U.S. Dollar",
+		"plural": "U.S. Dollars",
+		"sign": "$"
+	},
+	"zar": {
+		"code": "ZAR",
+		"singular": "South African Rand",
+		"plural": "South African Rand",
+		"sign": "R"
+	}
+}
