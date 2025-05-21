@@ -1,10 +1,10 @@
 <!---
 
-	[image]
+	[@image]
 		referenced image data (object)
 
-	[widths]
-		list of width values (string)
+	[@max-width]
+		limit for [srcset] (integer)
 
 --->
 
@@ -12,48 +12,49 @@
 
 	/* TODO:
 		- leverage Sanity Image parameters (bg, fit, flip)
-		- skip `[srcset]` if `this.image.extension` equals to "svg"
+		- skip [srcset] if `this.image.extension` equals to "svg"
+		- improve and reuse `buildSrc()`
 		- account for animated images
 	*/
 
-	const buildSrcSet = (src, widths, maxWidth) => {
+	const buildSrc = (src, width) => {
+		return `${src}?w=${width}&auto=format ${width}w`
+	}
 
-		const cleanWidths = [...new Set(
-			widths.split(",").map(width => parseInt(width.trim(), 10)).filter(width => Number.isInteger(width) && width > 0)
-		)].sort((a, b) => a - b)
+	const buildSrcSet = (src, maxWidth) => {
 
-		if (cleanWidths.length === 0) {
-			return `${src}?auto=format ${maxWidth}w`
-		}
+		widths = [240, 320, 480, 640, 960, 1280, 1920, 2560, 3840]
 
 		const srcSet = []
-		for (const width of cleanWidths) {
-			if (width > maxWidth) {
-				srcSet.push(`${src}?w=${maxWidth}&auto=format ${maxWidth}w`)
+		for (const width of widths) {
+			if (maxWidth > width) {
+				srcSet.push(buildSrc(src, width))
+			} else {
 				break
 			}
-			srcSet.push(`${src}?w=${width}&auto=format ${width}w`)
 		}
-		return srcSet.join(", ")
+		return [...srcSet, buildSrc(src, maxWidth)].join(", ")
 
 	}
 
-	const imageWidth = this.image?.metadata?.dimensions?.width || "800"
-	const imageHeight = this.image?.metadata?.dimensions?.height || "600"
+	const imageWidth = this.image?.metadata?.dimensions?.width || 800
+	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
-	const imageWidths = this.widths || "240, 480, 960, 1280, 1920"
 	const imageUrl = this.image?.url
+	const imageMaxWidth = parseInt(this.maxWidth, 10) || imageWidth
 
 	imageUrl ?
+		// output <img> markup if `imageUrl` is found
 		`<img webc:raw
 			${webc.renderAttributes(webc.attributes)}
 			${webc.renderAttributes(
 				Object.fromEntries(
 					Object.entries({
+						// default attributes
 						width: imageWidth,
 						height: imageHeight,
 						src: `${imageUrl}?auto=format`,
-						srcset: buildSrcSet(imageUrl, imageWidths, imageWidth),
+						srcset: buildSrcSet(imageUrl, imageMaxWidth),
 						alt: "",
 						style: `
 							--_aspect-ratio: ${imageRatio};
@@ -64,10 +65,13 @@
 						draggable: "false",
 						loading: "lazy",
 						decoding: "async"
-					}).filter(([key]) => !(key in webc.attributes)) // subtract attributes provided by the component
+					})
+					// override default attributes if provided
+					.filter(([key]) => !(key in webc.attributes))
 				)
 			)}
 		>`
+		// output error <p> if not
 		: `<p webc:raw>No valid image provided.</p>`
 
 </script>

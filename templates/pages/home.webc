@@ -12,14 +12,14 @@
 ---
 
 <better-image
-	class="new-image"
+	class="better-image"
 	alt="Hello world!"
 	:@image="sanityDemoImage"
 ></better-image>
 
 <better-image
 	class="new-image"
-	widths="699, 200, 1200"
+	@max-width="1200"
 	:@image="sanityDemoImage"
 ></better-image>
 
