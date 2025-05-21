@@ -31,14 +31,11 @@
 			throw new Error(error)
 		}
 	}
-	const buildSrc = (src, width) => {
-		return `${src}?w=${width}&auto=format`
-	}
-	const buildSrcSet = (src, widthMax) => {
+	const buildSrcset = (src, widthMax) => {
 		const widths = [240, 320, 480, 640, 960, 1280, 1920, 2560, 3840]
 		// filter out widths smaller than `widthMax`
 		const widthsFiltered = [...widths.filter(width => width < widthMax), widthMax]
-		return widthsFiltered.map(w => `${buildSrc(src, w)} ${w}w`).join(", ")
+		return widthsFiltered.map(w => `${buildSanityImageUrl(src, { w })} ${w}w`).join(", ")
 	}
 
 	const imageType = this.image?.extension
@@ -47,25 +44,6 @@
 	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
 	const imageUrl = this.image?.url
-	const imageAttributes = {
-		width: imageWidth,
-		height: imageHeight,
-		alt: "",
-		style: `
-			--_aspect-ratio: ${imageRatio};
-			--_width: ${imageWidth + "px"};
-			--_height: ${imageHeight + "px"};
-		`,
-		sizes: "auto",
-		draggable: "false",
-		loading: "lazy",
-		decoding: "async",
-		src: `${imageUrl}?auto=format`,
-		// omit [srcset] for SVGs
-		...(imageType !== "svg" && {
-			srcset: buildSrcSet(imageUrl, imageWidthMax)
-		})
-	}
 
 	imageUrl ?
 		// output image markup if `imageUrl` is found
@@ -73,8 +51,27 @@
 			${webc.renderAttributes(webc.attributes)}
 			${webc.renderAttributes(
 				Object.fromEntries(
+					Object.entries({
+						width: imageWidth,
+						height: imageHeight,
+						alt: "",
+						style: `
+							--_aspect-ratio: ${imageRatio};
+							--_width: ${imageWidth + "px"};
+							--_height: ${imageHeight + "px"};
+						`,
+						sizes: "auto",
+						draggable: "false",
+						loading: "lazy",
+						decoding: "async",
+						src: buildSrcset(imageUrl),
+						// omit [srcset] for SVGs
+						...(imageType !== "svg" && {
+							srcset: buildSrcset(imageUrl, imageWidthMax)
+						})
+					})
 					// override default attributes if provided
-					Object.entries(imageAttributes).filter(([key]) => !(key in webc.attributes))
+					.filter(([key]) => !(key in webc.attributes))
 				)
 			)}
 		>`
