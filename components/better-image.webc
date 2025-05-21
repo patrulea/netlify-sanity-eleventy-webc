@@ -38,7 +38,10 @@
 			...widths.filter(w => w < widthMax),
 			widthMax
 		]))
-		return widthsFiltered.map(w => `${buildSanityImageUrl(src, { w })} ${w}w`).join(", ")
+		return widthsFiltered.map(w => {
+			const url = buildSanityImageUrl(src, { w })
+			return `${url} ${w}w`
+		}).join(", ")
 	}
 
 	const imageType = this.image?.extension
