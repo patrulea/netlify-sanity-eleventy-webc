@@ -1,6 +1,7 @@
 <script webc:type="render" webc:is="template">
 	const { optimize } = require("svgo")
 	module.exports = async function () {
+
 		try {
 
 			const response = await fetch(this.src)

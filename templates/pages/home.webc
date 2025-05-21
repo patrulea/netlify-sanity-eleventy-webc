@@ -11,6 +11,23 @@
 }
 ---
 
+<better-image
+	class="new-image"
+	alt="Hello world!"
+	:@image="sanityDemoImage"
+></better-image>
+
+<better-image
+	class="new-image"
+	widths="699, 200, 1200"
+	:@image="sanityDemoImage"
+></better-image>
+
+<better-image
+	class="no-image"
+	alt="No world!"
+></better-image>
+
 <!--- <style></style> --->
 
 <!--- <script></script> --->

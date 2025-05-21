@@ -1,0 +1,74 @@
+<!---
+
+	[image]
+		referenced image data (object)
+
+	[widths]
+		list of width values (string)
+
+--->
+
+<script webc:type="js">
+
+	/* TODO:
+		- leverage Sanity Image parameters (bg, fit, flip)
+		- skip `[srcset]` if `this.image.extension` equals to "svg"
+		- add `fm=avif`
+		- account for animated images
+	*/
+
+	const buildSrcSet = (src, widths, maxWidth) => {
+
+		const cleanWidths = [...new Set(
+			widths.split(",").map(width => parseInt(width.trim(), 10)).filter(width => Number.isInteger(width) && width > 0)
+		)].sort((a, b) => a - b)
+
+		if (cleanWidths.length === 0) {
+			return `${src}?w=${maxWidth} ${maxWidth}w`
+		}
+
+		const srcSet = []
+		for (const width of cleanWidths) {
+			if (width > maxWidth) {
+				srcSet.push(`${src}?w=${maxWidth} ${maxWidth}w`)
+				break
+			}
+			srcSet.push(`${src}?w=${width} ${width}w`)
+		}
+		return srcSet.join(", ")
+
+	}
+
+	const imageWidth = this.image?.metadata?.dimensions?.width || "800"
+	const imageHeight = this.image?.metadata?.dimensions?.height || "600"
+	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
+	const imageWidths = this.widths || "240, 480, 960, 1280, 1920"
+	const imageUrl = this.image?.url
+
+	this.image?.url ?
+		`<img webc:raw
+			${webc.renderAttributes(webc.attributes)}
+			${webc.renderAttributes(
+				Object.fromEntries(
+					Object.entries({
+						width: imageWidth,
+						height: imageHeight,
+						src: imageUrl,
+						srcset: buildSrcSet(imageUrl, imageWidths, imageWidth),
+						alt: "",
+						style: `
+							--_aspect-ratio: ${imageRatio};
+							--_width: ${imageWidth + "px"};
+							--_height: ${imageHeight + "px"};
+						`,
+						sizes: "auto",
+						draggable: "false",
+						loading: "lazy",
+						decoding: "async"
+					}).filter(([key]) => !(key in webc.attributes)) // subtract attributes provided by the component
+				)
+			)}
+		>`
+		: `<p webc:raw>No valid image provided.</p>`
+
+</script>
