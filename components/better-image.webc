@@ -20,28 +20,18 @@
 	const buildSrc = (src, width) => {
 		return `${src}?w=${width}&auto=format ${width}w`
 	}
-
-	const buildSrcSet = (src, maxWidth) => {
-
-		widths = [240, 320, 480, 640, 960, 1280, 1920, 2560, 3840]
-
-		const srcSet = []
-		for (const width of widths) {
-			if (maxWidth > width) {
-				srcSet.push(buildSrc(src, width))
-			} else {
-				break
-			}
-		}
-		return [...srcSet, buildSrc(src, maxWidth)].join(", ")
-
+	const buildSrcSet = (src, widthMax) => {
+		const widths = [240, 320, 480, 640, 960, 1280, 1920, 2560, 3840]
+		// filter out widths smaller than `widthMax`
+		const widthsFiltered = [...widths.filter(width => width < widthMax), widthMax]
+		return widthsFiltered.map(width => buildSrc(src, width)).join(", ")
 	}
 
 	const imageWidth = this.image?.metadata?.dimensions?.width || 800
+	const imageWidthMax = parseInt(this.maxWidth, 10) || imageWidth
 	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
 	const imageUrl = this.image?.url
-	const imageMaxWidth = parseInt(this.maxWidth, 10) || imageWidth
 
 	imageUrl ?
 		// output <img> markup if `imageUrl` is found
@@ -54,7 +44,7 @@
 						width: imageWidth,
 						height: imageHeight,
 						src: `${imageUrl}?auto=format`,
-						srcset: buildSrcSet(imageUrl, imageMaxWidth),
+						srcset: buildSrcSet(imageUrl, imageWidthMax),
 						alt: "",
 						style: `
 							--_aspect-ratio: ${imageRatio};
