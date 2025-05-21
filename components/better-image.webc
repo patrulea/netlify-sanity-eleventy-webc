@@ -46,7 +46,7 @@
 
 	const imageType = this.image?.extension
 	const imageWidth = this.image?.metadata?.dimensions?.width || 800
-	const imageWidthMax = parseInt(this.maxWidth, 10) || imageWidth
+	const imageWidthMax = Math.min(parseInt(this.maxWidth, 10), imageWidth)
 	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
 	const imageUrl = this.image?.url
