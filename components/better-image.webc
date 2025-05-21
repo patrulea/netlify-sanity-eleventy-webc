@@ -17,7 +17,7 @@
 			const url = new URL(src)
 			// set default parameters
 			const urlParameters = new URLSearchParams(url.search)
-			if (!options.hasOwnProperty("auto")) {
+			if (!options.hasOwnProperty("auto") && !options.hasOwnProperty("fm")) {
 				urlParameters.set("auto", "format")
 			}
 			// apply options
@@ -44,6 +44,7 @@
 	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
 	const imageUrl = this.image?.url
+	const imagePlaceholder = (imageUrl && imageType !== "svg" && this.image?.metadata?.isOpaque) ? buildSanityImageUrl(imageUrl, { w: 4, fm: "webp" }) : buildSanityImageUrl(imageUrl)
 
 	imageUrl ?
 		// output image markup if `imageUrl` is found
@@ -64,8 +65,8 @@
 						draggable: "false",
 						loading: "lazy",
 						decoding: "async",
-						src: buildSrcset(imageUrl),
-						// omit [srcset] for SVGs
+						src: imagePlaceholder,
+						// omit [srcset] for vectors
 						...(imageType !== "svg" && {
 							srcset: buildSrcset(imageUrl, imageWidthMax)
 						})
