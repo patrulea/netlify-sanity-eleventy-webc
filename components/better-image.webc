@@ -13,7 +13,6 @@
 	/* TODO:
 		- leverage Sanity Image parameters (bg, fit, flip)
 		- skip `[srcset]` if `this.image.extension` equals to "svg"
-		- add `fm=avif`
 		- account for animated images
 	*/
 
@@ -24,16 +23,16 @@
 		)].sort((a, b) => a - b)
 
 		if (cleanWidths.length === 0) {
-			return `${src}?w=${maxWidth} ${maxWidth}w`
+			return `${src}?auto=format ${maxWidth}w`
 		}
 
 		const srcSet = []
 		for (const width of cleanWidths) {
 			if (width > maxWidth) {
-				srcSet.push(`${src}?w=${maxWidth} ${maxWidth}w`)
+				srcSet.push(`${src}?w=${maxWidth}&auto=format ${maxWidth}w`)
 				break
 			}
-			srcSet.push(`${src}?w=${width} ${width}w`)
+			srcSet.push(`${src}?w=${width}&auto=format ${width}w`)
 		}
 		return srcSet.join(", ")
 
@@ -45,7 +44,7 @@
 	const imageWidths = this.widths || "240, 480, 960, 1280, 1920"
 	const imageUrl = this.image?.url
 
-	this.image?.url ?
+	imageUrl ?
 		`<img webc:raw
 			${webc.renderAttributes(webc.attributes)}
 			${webc.renderAttributes(
@@ -53,7 +52,7 @@
 					Object.entries({
 						width: imageWidth,
 						height: imageHeight,
-						src: imageUrl,
+						src: `${imageUrl}?auto=format`,
 						srcset: buildSrcSet(imageUrl, imageWidths, imageWidth),
 						alt: "",
 						style: `
