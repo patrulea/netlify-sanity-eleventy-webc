@@ -23,10 +23,10 @@
 	:@image="sanityDemoImage"
 ></better-image>
 
-<!--- <better-image
+<better-image
 	class="no-image"
 	alt="No world!"
-></better-image> --->
+></better-image>
 
 <!--- <style></style> --->
 

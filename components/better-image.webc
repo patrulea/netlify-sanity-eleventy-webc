@@ -44,7 +44,6 @@
 	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
 	const imageUrl = this.image?.url
-	const imagePlaceholder = (imageUrl && imageType !== "svg" && this.image?.metadata?.isOpaque) ? buildSanityImageUrl(imageUrl, { w: 4, fm: "webp" }) : buildSanityImageUrl(imageUrl)
 
 	imageUrl ?
 		// output image markup if `imageUrl` is found
@@ -57,15 +56,18 @@
 						height: imageHeight,
 						alt: "",
 						style: `
-							--_aspect-ratio: ${imageRatio};
 							--_width: ${imageWidth + "px"};
 							--_height: ${imageHeight + "px"};
+							--_aspect-ratio: ${imageRatio};
+							${(imageUrl && imageType !== "svg" && this.image?.metadata?.isOpaque) ? `
+								--_background-image: url(${buildSanityImageUrl(imageUrl, { w: 4, fm: "webp" })});
+							` : ""}
 						`,
 						sizes: "auto",
 						draggable: "false",
 						loading: "lazy",
 						decoding: "async",
-						src: imagePlaceholder,
+						src: buildSanityImageUrl(imageUrl),
 						// omit [srcset] for vectors
 						...(imageType !== "svg" && {
 							srcset: buildSrcset(imageUrl, imageWidthMax)
