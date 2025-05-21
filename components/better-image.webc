@@ -33,8 +33,11 @@
 	}
 	const buildSrcset = (src, widthMax) => {
 		const widths = [240, 320, 480, 640, 960, 1280, 1920, 2560, 3840]
-		// filter out widths smaller than `widthMax`
-		const widthsFiltered = [...widths.filter(width => width < widthMax), widthMax]
+		// filter out duplicated widths and widths smaller than `widthMax`
+		const widthsFiltered = Array.from(new Set([
+			...widths.filter(w => w < widthMax),
+			widthMax
+		]))
 		return widthsFiltered.map(w => `${buildSanityImageUrl(src, { w })} ${w}w`).join(", ")
 	}
 
