@@ -10,20 +10,35 @@
 
 <script webc:type="js">
 
-	/* TODO:
-		- improve and reuse `buildSrc()`
-		- leverage Sanity Image parameters (bg, fit, flip)
-		- account for animated images
-	*/
+	/* TODO: account for animated images */
 
+	const buildSanityImageUrl = (src, options = {}) => {
+		try {
+			const url = new URL(src)
+			// set default parameters
+			const urlParameters = new URLSearchParams(url.search)
+			if (!options.hasOwnProperty("auto")) {
+				urlParameters.set("auto", "format")
+			}
+			// apply options
+			for (const [key, value] of Object.entries(options)) {
+				urlParameters.set(key, value)
+			}
+			// process into string
+			url.search = urlParameters.toString()
+			return url.toString()
+		} catch (error) {
+			throw new Error(error)
+		}
+	}
 	const buildSrc = (src, width) => {
-		return `${src}?w=${width}&auto=format ${width}w`
+		return `${src}?w=${width}&auto=format`
 	}
 	const buildSrcSet = (src, widthMax) => {
 		const widths = [240, 320, 480, 640, 960, 1280, 1920, 2560, 3840]
 		// filter out widths smaller than `widthMax`
 		const widthsFiltered = [...widths.filter(width => width < widthMax), widthMax]
-		return widthsFiltered.map(width => buildSrc(src, width)).join(", ")
+		return widthsFiltered.map(w => `${buildSrc(src, w)} ${w}w`).join(", ")
 	}
 
 	const imageType = this.image?.extension
@@ -53,7 +68,7 @@
 	}
 
 	imageUrl ?
-		// output <img> markup if `imageUrl` is found
+		// output image markup if `imageUrl` is found
 		`<img webc:raw
 			${webc.renderAttributes(webc.attributes)}
 			${webc.renderAttributes(
@@ -63,7 +78,7 @@
 				)
 			)}
 		>`
-		// output error <p> if not
+		// output error paragraph if not
 		: `<p webc:raw>No valid image provided.</p>`
 
 </script>
