@@ -161,6 +161,9 @@
 			img {
 				-webkit-user-drag: none; /* prevent ghost images in Safari */
 				font-style: italic; /* differentiate fallback alt text */
+				aspect-ratio: var(--_aspect-ratio);
+				background: var(--_background-image);
+				background-size: 100% 100%;
 			}
 			picture {
 				display: contents;
