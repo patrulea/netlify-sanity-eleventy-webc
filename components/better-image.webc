@@ -11,9 +11,9 @@
 <script webc:type="js">
 
 	/* TODO:
-		- leverage Sanity Image parameters (bg, fit, flip)
 		- skip [srcset] if `this.image.extension` equals to "svg"
 		- improve and reuse `buildSrc()`
+		- leverage Sanity Image parameters (bg, fit, flip)
 		- account for animated images
 	*/
 
@@ -27,11 +27,28 @@
 		return widthsFiltered.map(width => buildSrc(src, width)).join(", ")
 	}
 
+	const imageType = this.image?.extension
 	const imageWidth = this.image?.metadata?.dimensions?.width || 800
 	const imageWidthMax = parseInt(this.maxWidth, 10) || imageWidth
 	const imageHeight = this.image?.metadata?.dimensions?.height || 600
 	const imageRatio = this.image?.metadata?.dimensions?.aspectRatio || imageWidth / imageHeight
 	const imageUrl = this.image?.url
+	const imageAttributes = {
+		width: imageWidth,
+		height: imageHeight,
+		src: `${imageUrl}?auto=format`,
+		srcset: buildSrcSet(imageUrl, imageWidthMax),
+		alt: "",
+		style: `
+			--_aspect-ratio: ${imageRatio};
+			--_width: ${imageWidth + "px"};
+			--_height: ${imageHeight + "px"};
+		`,
+		sizes: "auto",
+		draggable: "false",
+		loading: "lazy",
+		decoding: "async"
+	}
 
 	imageUrl ?
 		// output <img> markup if `imageUrl` is found
@@ -39,25 +56,8 @@
 			${webc.renderAttributes(webc.attributes)}
 			${webc.renderAttributes(
 				Object.fromEntries(
-					Object.entries({
-						// default attributes
-						width: imageWidth,
-						height: imageHeight,
-						src: `${imageUrl}?auto=format`,
-						srcset: buildSrcSet(imageUrl, imageWidthMax),
-						alt: "",
-						style: `
-							--_aspect-ratio: ${imageRatio};
-							--_width: ${imageWidth + "px"};
-							--_height: ${imageHeight + "px"};
-						`,
-						sizes: "auto",
-						draggable: "false",
-						loading: "lazy",
-						decoding: "async"
-					})
 					// override default attributes if provided
-					.filter(([key]) => !(key in webc.attributes))
+					Object.entries(imageAttributes).filter(([key]) => !(key in webc.attributes))
 				)
 			)}
 		>`
